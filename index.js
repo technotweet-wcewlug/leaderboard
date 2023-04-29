@@ -146,6 +146,26 @@ app.get("/all", async (req, res) => {
   }
 });
 
+app.get("/rank/:username", async (req, res) => {
+  try {
+    const data = await User.find().sort({ score: -1, updatedAt: 1 });
+    
+    console.log(data.length);
+
+    let rank = NaN;
+    for(var i in data) {
+      if(data[i].username === req.params.username) {
+        rank = (Number)(i) + 1;
+        break;
+      }
+    }
+
+    res.json(rank);
+  } catch (error) {
+    res.json(error.message);
+  }
+});
+
 app.listen(process.env.PORT, () => {
   console.log(`Listening on ${process.env.PORT}`);
 });
