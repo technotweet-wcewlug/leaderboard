@@ -12,7 +12,6 @@ const userSchema = new mongoose.Schema(
   { timestamps: true }
 );
 const User = mongoose.model("User", userSchema);
-
 const flags = [
   "WLUG{733G8ooFhqQnHhCu}",
   "WLUG{GYcf5MVrecOhnB6j}",
@@ -118,11 +117,25 @@ app.post("/save", async (req, res) => {
 })
 
 
-app.put('/put',async(req,res)=>{
-    const body = req.body
-    const user = await User.findOneAndUpdate({ username: body["body"] }, {$set:{ score: score }});
-    res.send(user);
+
+app.get('/usr/:username',async(req,res)=>{
+  try {
+      const {username} = req.params
+      const user = await User.find({ username:username })
+      if(user) 
+      {
+        res.status(200).send(user);
+      }
+      else{
+        res.status(202).send("No user exist, check username");
+      }
+      
+    } catch (error) {
+      console.log(error.message)
+      return res.status(401).send(error.message)
+    }
 }
+
 )
 app.get("/all", async (req, res) => {
   try {
