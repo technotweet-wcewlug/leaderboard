@@ -7,8 +7,22 @@ const { default: mongoose } = require("mongoose");
 app.use(express.json());
 app.use(cors());
 
+// { username: String , ansKey: [String], score: Number },
 const userSchema = new mongoose.Schema(
-  { username: String, ansKey: [String], score: Number },
+  {
+    username : {
+      type: String,
+      unique: true,
+      required: true
+    },
+    ansKey: {
+      type: [String],
+      required: true,
+    },
+    score: {
+      type: Number,
+    }
+  },
   { timestamps: true }
 );
 const User = mongoose.model("User", userSchema);
@@ -29,7 +43,7 @@ mongoose
   });
 
 app.get("/", (req, res) => {
-  res.status(200).send("Leaderboard here");
+  res.status(210).send("Leaderboard here");
 });
 
 
@@ -59,7 +73,7 @@ app.post("/save", async (req, res) => {
   
         default:
           return res
-            .status(201)
+            .status(205)
             .send({ message: "Your Flag is wrong, keep searching!!!" });
           break;
       }
@@ -75,7 +89,7 @@ app.post("/save", async (req, res) => {
         .status(202)
         .send({message:
           "Don't enter the same ans again and again, we know you got an flag",
-          score:user['score']
+          score:user['score'] 
         });
         }
         else{
@@ -96,7 +110,7 @@ app.post("/save", async (req, res) => {
             }
             console.log(updatedUser)
             return res
-              .status(201)
+              .status(200)
               .send({ message: "Keep going, u got the flag...", score: updatedUser['score'] });
         }
     }
@@ -124,10 +138,10 @@ app.get('/usr/:username',async(req,res)=>{
       const user = await User.find({ username:username })
       if(user) 
       {
-        res.status(200).send(user);
+        res.status(209).send(user);
       }
       else{
-        res.status(202).send("No user exist, check username");
+        res.status(203).send("No user exist, check username");
       }
       
     } catch (error) {
@@ -140,7 +154,7 @@ app.get('/usr/:username',async(req,res)=>{
 app.get("/all", async (req, res) => {
   try {
     const data = await User.find().sort({ score: -1, updatedAt: 1 });
-    res.status(200).send(data);
+    res.status(211).send(data);
   } catch (error) {
     res.status(405).send(error.message);
   }
