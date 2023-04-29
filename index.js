@@ -74,9 +74,10 @@ app.post("/save", async (req, res) => {
             //throw error
             return res
         .status(202)
-        .send(
-          "Don't enter the same ans again and again, we know you got an flag"
-        );
+        .send({message:
+          "Don't enter the same ans again and again, we know you got an flag",
+          score:user['score']
+        });
         }
         else{
             //update finally
