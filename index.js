@@ -92,7 +92,7 @@ app.post("/save", async (req, res) => {
             {
                 return res
               .status(201)
-              .send({ message: "Hooray!!!, You have completed the hunt!" });
+              .send({ message: "Hooray!!!, You have completed the hunt!",score:100 });
             }
             console.log(updatedUser)
             return res
